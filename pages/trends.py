@@ -60,20 +60,20 @@ if st.button('Fetch Google Trends data for selected keywords'):
 
         st.write(data)
 else:
-    data = data.drop(labels=['isPartial'], axis='columns')
+    # data = data.drop(labels=['isPartial'], axis='columns')
 
-    # If the data is already in the session state, load it
+    # # If the data is already in the session state, load it
   
-    if not data.empty:
-        # Fetch the most recent data based on the date range
-        timeframe_start = data.index.min().strftime('%Y-%m-%d')
-        timeframe_end = data.index.max().strftime('%Y-%m-%d')
-        timeframe = f'{timeframe_start} {timeframe_end}'
-        pytrends.build_payload(selected_keywords, timeframe=timeframe)
-        updated_data = pytrends.interest_over_time()
-        if not updated_data.empty:
-            updated_data = updated_data.drop(labels=['isPartial'], axis='columns')
-            data = pd.concat([data, updated_data])
+    # if not data.empty:
+    #     # Fetch the most recent data based on the date range
+    #     timeframe_start = data.index.min().strftime('%Y-%m-%d')
+    #     timeframe_end = data.index.max().strftime('%Y-%m-%d')
+    #     timeframe = f'{timeframe_start} {timeframe_end}'
+    #     pytrends.build_payload(selected_keywords, timeframe=timeframe)
+    #     updated_data = pytrends.interest_over_time()
+    #     if not updated_data.empty:
+    #         updated_data = updated_data.drop(labels=['isPartial'], axis='columns')
+    #         data = pd.concat([data, updated_data])
     if 'data' in st.session_state:
         st.session_state.data = data
         
