@@ -60,6 +60,8 @@ if st.button('Fetch Google Trends data for selected keywords'):
 
         st.write(data)
 else:
+    data = data.drop(labels=['isPartial'], axis='columns')
+
     # If the data is already in the session state, load it
   
     if not data.empty:
