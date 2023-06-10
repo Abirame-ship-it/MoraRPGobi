@@ -41,7 +41,17 @@ if st.button('Fetch Google Trends data for selected keywords'):
     # Get interest over time
     data = pytrends.interest_over_time()
     if not data.empty:
+        # Fetch the most recent data based on the date range
         data = data.drop(labels=['isPartial'], axis='columns')
+
+        timeframe_start = data.index.min().strftime('%Y-%m-%d')
+        timeframe_end = data.index.max().strftime('%Y-%m-%d')
+        timeframe = f'{timeframe_start} {timeframe_end}'
+        pytrends.build_payload(selected_keywords, timeframe=timeframe)
+        updated_data = pytrends.interest_over_time()
+        if not updated_data.empty:
+            updated_data = updated_data.drop(labels=['isPartial'], axis='columns')
+            data = pd.concat([data, updated_data]
 
         # Save the data to the session state
         st.session_state.data = data
@@ -49,31 +59,33 @@ if st.button('Fetch Google Trends data for selected keywords'):
         st.write(data)
 else:
     # If the data is already in the session state, load it
+  
+    if not data.empty:
+        # Fetch the most recent data based on the date range
+        timeframe_start = data.index.min().strftime('%Y-%m-%d')
+        timeframe_end = data.index.max().strftime('%Y-%m-%d')
+        timeframe = f'{timeframe_start} {timeframe_end}'
+        pytrends.build_payload(selected_keywords, timeframe=timeframe)
+        updated_data = pytrends.interest_over_time()
+        if not updated_data.empty:
+            updated_data = updated_data.drop(labels=['isPartial'], axis='columns')
+            data = pd.concat([data, updated_data])
     if 'data' in st.session_state:
         data = st.session_state.data
-        st.write(data)
+        
 
+ 
 # Assuming you want to use the AI to answer questions based on the fetched data
 query = st.text_input("Enter your question")
 ask = st.button("Ask")
-
+    
 if ask:
     # Check if data is available
     if 'data' in st.session_state:
         data = st.session_state.data
 
         # Check if data is not empty
-        if not data.empty:
-            # Fetch the most recent data based on the date range
-            timeframe_start = data.index.min().strftime('%Y-%m-%d')
-            timeframe_end = data.index.max().strftime('%Y-%m-%d')
-            timeframe = f'{timeframe_start} {timeframe_end}'
-            pytrends.build_payload(selected_keywords, timeframe=timeframe)
-            updated_data = pytrends.interest_over_time()
-            if not updated_data.empty:
-                updated_data = updated_data.drop(labels=['isPartial'], axis='columns')
-                data = pd.concat([data, updated_data])
-
+      
         response = loader.run_pandas_ai(data, query, is_conversational_answer=True)
         st.write(response)
     else:
