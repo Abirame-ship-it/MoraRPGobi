@@ -7,4 +7,5 @@ llama-index
 pytrends 
 pandas
 pandasai
+holidayapi
 scipy
