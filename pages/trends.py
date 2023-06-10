@@ -54,7 +54,7 @@ if st.button('Fetch Google Trends data for selected keywords'):
             data = pd.concat([data, updated_data]
 
         # Save the data to the session state
-        st.session_state.data = data
+            st.session_state.data = data
 
         st.write(data)
 else:
