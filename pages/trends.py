@@ -6,19 +6,14 @@ from pandasai.llm.openai import OpenAI
 import datetime
 
 
-key = 'b3550910-91ef-4071-8272-390dcd4f51e2'
-hapi = holidayapi.v1(key)
-holidays = hapi.holidays({
-    'country': 'LK',
-    'year': '2022',
-})
 
-if holidays['status'] == 200:
-    for holiday in holidays['holidays']:
-        name = holiday['name']
-        date = holiday['date']
-        public = holiday['public']
-        observed = holiday['observed']
+
+# if holidays['status'] == 200:
+#     for holiday in holidays['holidays']:
+#         name = holiday['name']
+#         date = holiday['date']
+#         public = holiday['public']
+#         observed = holiday['observed']
 
 
 
@@ -47,58 +42,40 @@ loader = PandasAIReader(llm=llm)
 # When keywords are selected, fetch data from Google Trends and display it
 if st.button('Fetch Google Trends data for selected keywords'):
     # Get the current year
-    current_year = datetime.datetime.now().year
 
-    # Calculate the previous year
-    previous_year = current_year - 1
+    key = 'b3550910-91ef-4071-8272-390dcd4f51e2'
+    hapi = holidayapi.v1(key)
+    holidays = hapi.holidays({
+        'country': 'LK',
+        'year': '2022',
+    })
 
-    # Define the timeframe
-    timeframe = f'{previous_year}-01-01 {previous_year}-12-31'
 
-    # Get Google Trends data
-    pytrends.build_payload(selected_keywords, timeframe=timeframe)
+    pytrends.build_payload(kw_list, timeframe='today 5-y')
 
-    # Get interest over time
+        # Get interest over time
     data = pytrends.interest_over_time()
-    if not data.empty:
-        # Fetch the most recent data based on the date range
-        data = data.drop(labels=['isPartial'], axis='columns')
+        if not data.empty:
+            names = [entry['name'] for entry in holidays["holidays"]]
+            dates = [entry['date'] for entry in holidays["holidays"]]
 
-        timeframe_start = data.index.min().strftime('%Y-%m-%d')
-        timeframe_end = data.index.max().strftime('%Y-%m-%d')
-        timeframe = f'{timeframe_start} {timeframe_end}'
-        pytrends.build_payload(selected_keywords, timeframe=timeframe)
-        updated_data = pytrends.interest_over_time()
-        if not updated_data.empty:
-            updated_data = updated_data.drop(labels=['isPartial'], axis='columns')
-            data = pd.concat([data, updated_data])
-            st.write(updated_data)
+            # Create a new DataFrame with extracted data
+            new_df = pd.DataFrame({'date': dates, 'name': names})
+
+            # Merge the new DataFrame with the existing DataFrame based on the date column
+            data = data.merge(new_df, on='date', how='left')
+
+            data = data.drop(labels=['isPartial'],axis='columns')
+
+            # Save the data to the session state
+            st.session_state.data = data
+
             st.write(data)
-            if 'data' not in st.session_state:
-                st.session_state.data = data
-        # Save the data to the session state
-#         st.session_state.data = data
-                           
-
-        st.write(st.session_state.data)
-else:
-    # data = data.drop(labels=['isPartial'], axis='columns')
-
-    # # If the data is already in the session state, load it
-  
-    # if not data.empty:
-    #     # Fetch the most recent data based on the date range
-    #     timeframe_start = data.index.min().strftime('%Y-%m-%d')
-    #     timeframe_end = data.index.max().strftime('%Y-%m-%d')
-    #     timeframe = f'{timeframe_start} {timeframe_end}'
-    #     pytrends.build_payload(selected_keywords, timeframe=timeframe)
-    #     updated_data = pytrends.interest_over_time()
-    #     if not updated_data.empty:
-    #         updated_data = updated_data.drop(labels=['isPartial'], axis='columns')
-    #         data = pd.concat([data, updated_data])
-    if 'data' in st.session_state:
-        data = st.session_state.data
-
+    else:
+        # If the data is already in the session state, load it
+        if 'data' in st.session_state:
+            data = st.session_state.data
+            st.write(data)
 
  
 # Assuming you want to use the AI to answer questions based on the fetched data
