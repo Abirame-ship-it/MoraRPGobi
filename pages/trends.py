@@ -55,22 +55,23 @@ if st.button('Fetch Google Trends data for selected keywords'):
 
         # Get interest over time
     data = pytrends.interest_over_time()
-        if not data.empty:
-            names = [entry['name'] for entry in holidays["holidays"]]
-            dates = [entry['date'] for entry in holidays["holidays"]]
 
-            # Create a new DataFrame with extracted data
-            new_df = pd.DataFrame({'date': dates, 'name': names})
+    if not data.empty:
+        names = [entry['name'] for entry in holidays["holidays"]]
+        dates = [entry['date'] for entry in holidays["holidays"]]
 
-            # Merge the new DataFrame with the existing DataFrame based on the date column
-            data = data.merge(new_df, on='date', how='left')
+        # Create a new DataFrame with extracted data
+        new_df = pd.DataFrame({'date': dates, 'name': names})
 
-            data = data.drop(labels=['isPartial'],axis='columns')
+        # Merge the new DataFrame with the existing DataFrame based on the date column
+        data = data.merge(new_df, on='date', how='left')
 
-            # Save the data to the session state
-            st.session_state.data = data
+        data = data.drop(labels=['isPartial'],axis='columns')
 
-            st.write(data)
+        # Save the data to the session state
+        st.session_state.data = data
+
+        st.write(data)
     else:
         # If the data is already in the session state, load it
         if 'data' in st.session_state:
