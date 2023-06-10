@@ -92,7 +92,7 @@ if ask:
 
         # Check if data is not empty
       
-        response = loader.run_pandas_ai(data, query, is_conversational_answer=True)
+        response = loader.run_pandas_ai(st.session_state.data, query, is_conversational_answer=True)
         st.write(response)
     else:
         st.write("Please fetch Google Trends data first.")
