@@ -42,7 +42,9 @@ loader = PandasAIReader(llm=llm)
 # When keywords are selected, fetch data from Google Trends and display it
 if st.button('Fetch Google Trends data for selected keywords'):
     # Get the current year
-
+    
+    
+    kw_list = selected_keywords
     key = 'b3550910-91ef-4071-8272-390dcd4f51e2'
     hapi = holidayapi.v1(key)
     holidays = hapi.holidays({
