@@ -29,7 +29,7 @@ if st.button('Fetch Google Trends data for selected keywords'):
     kw_list = selected_keywords
 
     # Get Google Trends data
-    pytrends.build_payload(kw_list, timeframe='today 5-y')
+    pytrends.build_payload(kw_list, timeframe='2022-01-01 2022-12-31')
 
     # Get interest over time
     data = pytrends.interest_over_time()
