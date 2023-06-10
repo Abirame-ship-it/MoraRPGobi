@@ -5,6 +5,26 @@ from llama_index import download_loader
 from pandasai.llm.openai import OpenAI
 import datetime
 
+
+key = 'b3550910-91ef-4071-8272-390dcd4f51e2'
+hapi = holidayapi.v1(key)
+holidays = hapi.holidays({
+    'country': 'LK',
+    'year': '2022',
+})
+
+if holidays['status'] == 200:
+    for holiday in holidays['holidays']:
+        name = holiday['name']
+        date = holiday['date']
+        public = holiday['public']
+        observed = holiday['observed']
+
+
+
+
+
+
 # Initialize pytrends
 pytrends = TrendReq(hl='en-US', tz=360)
 
