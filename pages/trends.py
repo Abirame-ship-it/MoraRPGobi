@@ -66,7 +66,7 @@ if st.button('Fetch Google Trends data for selected keywords'):
         new_df = pd.DataFrame({'date': dates, 'name': names})
 
         # Merge the new DataFrame with the existing DataFrame based on the date column
-        data = data.concat(new_df)
+        data = pd.concat(data,new_df)
 
         data = data.drop(labels=['isPartial'],axis='columns')
 
