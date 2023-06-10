@@ -52,13 +52,15 @@ if st.button('Fetch Google Trends data for selected keywords'):
         if not updated_data.empty:
             updated_data = updated_data.drop(labels=['isPartial'], axis='columns')
             data = pd.concat([data, updated_data])
-            if 'data' in st.session_state:
-                data = st.session_state.data
+            st.write(updated_data)
+            st.write(data)
+            if 'data' not in st.session_state:
+                st.session_state.data = data
         # Save the data to the session state
 #         st.session_state.data = data
                            
 
-        st.write(data)
+        st.write(st.session_state.data)
 else:
     # data = data.drop(labels=['isPartial'], axis='columns')
 
