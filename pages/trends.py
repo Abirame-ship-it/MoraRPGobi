@@ -88,7 +88,7 @@ ask = st.button("Ask")
 if ask:
     # Check if data is available
     if 'data' in st.session_state:
-        st.session_state.data = data
+        # st.session_state.data = data
 
         # Check if data is not empty
       
