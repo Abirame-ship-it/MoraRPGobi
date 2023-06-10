@@ -73,7 +73,7 @@ if st.button('Fetch Google Trends data for selected keywords'):
         # Save the data to the session state
         st.session_state.data = data
 
-        st.write(data)
+        st.write(st.session_state.data)
     else:
         # If the data is already in the session state, load it
         if 'data' in st.session_state:
