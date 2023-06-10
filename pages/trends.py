@@ -75,8 +75,8 @@ else:
     #         updated_data = updated_data.drop(labels=['isPartial'], axis='columns')
     #         data = pd.concat([data, updated_data])
     if 'data' in st.session_state:
-        st.session_state.data = data
-        
+        data = st.session_state.data
+
 
  
 # Assuming you want to use the AI to answer questions based on the fetched data
