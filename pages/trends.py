@@ -6,7 +6,7 @@ from pandasai.llm.openai import OpenAI
 import datetime
 
 
-
+import holidayapi
 
 # if holidays['status'] == 200:
 #     for holiday in holidays['holidays']:
