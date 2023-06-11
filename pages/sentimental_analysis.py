@@ -13,7 +13,7 @@ st.subheader("Sentimental Analysis-chat")
 
 # Define the path to your CSV file
 # file_path = Path('Preprocessingdata.csv')
-patj = os.path.join('data','Preprocessingdata.csv')
+patj = os.path.join('data','PreprocessingData(1).csv')
 # st.write(patj)
 # Read the CSV file into a pandas DataFrame
 df = pd.read_csv(patj)
