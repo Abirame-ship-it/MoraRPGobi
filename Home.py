@@ -4,7 +4,7 @@ import fitz
 import openai
 import os
 
-openai.api_key = os.getenv("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")
+openai.api_key = os.getenv("API_KEY")
 st.markdown(
     f'''
         <style>
